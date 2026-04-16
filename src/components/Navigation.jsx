@@ -10,8 +10,15 @@ export const Navigation = ({ active = "home", onNavigate }) => {
   ];
 
   return (
-    <nav className="fixed bottom-0 w-full z-50 rounded-t-3xl bg-white/90 backdrop-blur-xl shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
-      <div className="flex justify-around items-center w-full px-4 pb-6 pt-2 rtl:flex-row-reverse">
+    <nav
+      className="
+        fixed bottom-0 left-0 right-0 z-50
+        bg-white/90 backdrop-blur-xl
+        shadow-[0_-8px_30px_rgba(0,0,0,0.08)]
+        safe-bottom
+      "
+    >
+      <div className="flex justify-around items-center px-4 py-3">
         {navItems.map((item) => {
           const isActive = active === item.id;
 
@@ -19,19 +26,21 @@ export const Navigation = ({ active = "home", onNavigate }) => {
             <button
               key={item.id}
               onClick={() => onNavigate?.(item.id)}
-              className={`flex flex-col items-center justify-center px-6 py-2 active:scale-90 transition-transform duration-150 rounded-2xl ${
-                isActive
+              className={`
+                flex flex-col items-center justify-center
+                px-4 py-2 rounded-2xl transition
+                active:scale-95
+                ${isActive
                   ? "bg-[#006c49]/10 text-[#006c49]"
-                  : "text-slate-400 hover:text-primary"
-              }`}
+                  : "text-slate-400"}
+              `}
             >
               <MaterialIcon
                 name={item.icon}
                 filled={isActive}
                 className="mb-1"
               />
-
-              <span className="font-headline text-[12px] font-semibold uppercase tracking-widest">
+              <span className="text-[12px] font-semibold uppercase">
                 {item.label}
               </span>
             </button>
