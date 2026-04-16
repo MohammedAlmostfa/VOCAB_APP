@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Header,
   Navigation,
@@ -7,28 +7,59 @@ import {
   StatCard,
   Input,
 } from "../components";
-import { TEXT, SAMPLE_WORDS, ICONS } from "../constants/theme";
+import { TEXT, ICONS } from "../constants/theme";
 import { MaterialIcon } from "../utils/helpers.jsx";
+import { addWord, getTodayWords, deleteWord }  from "../storage/index";
 
 export const DayViewPage = ({ onNavigate }) => {
-  const [words, setWords] = useState(SAMPLE_WORDS);
+  const [words, setWords] = useState([]);
   const [newWord, setNewWord] = useState({ english: "", arabic: "" });
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleAddWord = () => {
-    if (newWord.english.trim() && newWord.arabic.trim()) {
-      const word = {
-        id: Date.now(),
-        english: newWord.english,
-        arabic: newWord.arabic,
-        colorClass: ["primary", "secondary", "tertiary"][words.length % 3],
-      };
-      setWords([...words, word]);
-      setNewWord({ english: "", arabic: "" });
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  // 🟢 تحميل كلمات اليوم من SQLite مباشرة
+  const loadData = async () => {
+    try {
+      setIsLoading(true);
+
+      const data = await getTodayWords(); // ✅ DB مباشرة
+
+      setWords(data || []);
+    } catch (error) {
+      console.error("Load data error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleDeleteWord = (index) => {
-    setWords(words.filter((_, i) => i !== index));
+  // 🟢 إضافة كلمة
+  const handleAddWord = async () => {
+    if (!newWord.english.trim() || !newWord.arabic.trim()) return;
+
+    try {
+      const created = await addWord(newWord.english, newWord.arabic);
+
+      // 🔥 إضافة فورية
+      setWords((prev) => [created, ...prev]);
+
+      setNewWord({ english: "", arabic: "" });
+    } catch (error) {
+      console.error("Add word error:", error);
+    }
+  };
+
+  // 🟢 حذف كلمة
+  const handleDeleteWord = async (id) => {
+    try {
+      await deleteWord(id);
+
+      setWords((prev) => prev.filter((w) => w.id !== id));
+    } catch (error) {
+      console.error("Delete error:", error);
+    }
   };
 
   return (
@@ -36,7 +67,7 @@ export const DayViewPage = ({ onNavigate }) => {
       <Header />
 
       <main className="max-w-4xl mx-auto pt-28 px-6">
-        {/* Hero Section */}
+        {/* Stats */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <StatCard
             title={TEXT.personalDictionary}
@@ -44,6 +75,7 @@ export const DayViewPage = ({ onNavigate }) => {
             subtitle={TEXT.dailyStatus}
             bgColor="md:col-span-2 bg-surface-container-lowest"
           />
+
           <StatCard
             title={TEXT.todaysWords}
             value={words.length}
@@ -52,7 +84,7 @@ export const DayViewPage = ({ onNavigate }) => {
           />
         </section>
 
-        {/* Add Word Form */}
+        {/* Add Word */}
         <section className="bg-surface-container-low p-8 rounded-3xl mb-12">
           <h3 className="text-lg font-bold text-on-surface mb-6 flex items-center gap-2 font-headline">
             <MaterialIcon name={ICONS.addCircle} className="text-primary" />
@@ -62,16 +94,15 @@ export const DayViewPage = ({ onNavigate }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Input
               label={TEXT.englishWord}
-              placeholder="e.g. Resilience"
               value={newWord.english}
               onChange={(e) =>
                 setNewWord({ ...newWord, english: e.target.value })
               }
               dir="ltr"
             />
+
             <Input
               label={TEXT.arabicMeaning}
-              placeholder="مثال: المرونة"
               value={newWord.arabic}
               onChange={(e) =>
                 setNewWord({ ...newWord, arabic: e.target.value })
@@ -99,25 +130,27 @@ export const DayViewPage = ({ onNavigate }) => {
             <h3 className="text-sm font-bold text-on-surface-variant uppercase tracking-widest font-label">
               {TEXT.recentWords}
             </h3>
-            <button className="text-xs font-bold text-primary hover:underline font-label">
-              {TEXT.viewAll}
-            </button>
           </div>
 
-          {words.length === 0 ? (
+          {isLoading ? (
+            <div className="text-center py-12">
+              <p className="text-on-surface-variant font-body">
+                جاري التحميل...
+              </p>
+            </div>
+          ) : words.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-on-surface-variant font-body">
                 لا توجد كلمات بعد. أضف كلمة جديدة!
               </p>
             </div>
           ) : (
-            words.map((word, index) => (
+            words.map((word) => (
               <WordCard
                 key={word.id}
-                index={index}
-                english={word.english}
-                arabic={word.arabic}
-                onDelete={() => handleDeleteWord(index)}
+                english={word.word}
+                arabic={word.meaning}
+                onDelete={() => handleDeleteWord(word.id)}
               />
             ))
           )}
