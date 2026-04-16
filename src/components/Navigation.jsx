@@ -10,10 +10,11 @@ export const Navigation = ({ active = "home", onNavigate }) => {
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 w-full z-50 rounded-t-3xl bg-white/90 backdrop-blur-xl shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
-      <div className="flex justify-around items-center w-full px-4 pb-8 pt-2 rtl:flex-row-reverse">
+    <nav className="fixed bottom-0 w-full z-50 rounded-t-3xl bg-white/90 backdrop-blur-xl shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+      <div className="flex justify-around items-center w-full px-4 pb-6 pt-2 rtl:flex-row-reverse">
         {navItems.map((item) => {
           const isActive = active === item.id;
+
           return (
             <button
               key={item.id}
@@ -29,6 +30,7 @@ export const Navigation = ({ active = "home", onNavigate }) => {
                 filled={isActive}
                 className="mb-1"
               />
+
               <span className="font-headline text-[12px] font-semibold uppercase tracking-widest">
                 {item.label}
               </span>

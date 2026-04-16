@@ -111,17 +111,18 @@ export const DayViewPage = ({ onNavigate }) => {
             />
           </div>
 
-          <div className="mt-8 flex justify-end">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={handleAddWord}
-              icon={ICONS.send}
-              iconPosition="right"
-            >
-              {TEXT.addToList}
-            </Button>
-          </div>
+        <div className="mt-8 flex justify-center md:justify-end">
+  <Button
+    variant="primary"
+    size="lg"
+    onClick={handleAddWord}
+    icon={ICONS.send}
+    iconPosition="right"
+    className="w-full md:w-auto"
+  >
+    {TEXT.addToList}
+  </Button>
+</div>
         </section>
 
         {/* Words List */}
