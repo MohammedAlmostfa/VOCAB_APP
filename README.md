@@ -1,16 +1,103 @@
-# React + Vite
+# 📱 vocaApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🧠 Overview
 
-Currently, two official plugins are available:
+**vocaApp** is a mobile application designed to help users learn and retain English vocabulary efficiently. It allows users to quickly save new words with translations and review them using a **spaced repetition system (SRS)** for long-term memory retention.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The app is built as a **Minimum Viable Product (MVP)** and is continuously evolving with new features and improvements.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🎯 Features
 
-## Expanding the ESLint configuration
+### 📌 Word Management
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* Add new English words with translations
+* Edit or delete saved words
+* Automatic organization by the day words are added
+
+### 🔁 Spaced Repetition System
+
+* Smart review system based on spaced repetition
+* Interactive flashcards
+* Helps improve long-term retention
+
+### 📚 Full Vocabulary Review
+
+* Review all saved words in one session
+* Useful for quick refresh or exam preparation
+
+### 💾 Local Storage
+
+* Uses **SQLite** for offline storage
+* Fast and reliable data access
+* No internet connection required
+
+---
+
+## 🏗️ Architecture
+
+| Module                   | Description                                           |
+| ------------------------ | ----------------------------------------------------- |
+| Word Management          | Add, edit, delete words with automatic daily grouping |
+| Spaced Repetition System | Algorithm-based review system for better memorization |
+| Full Vocabulary Review   | Review all stored words at once                       |
+| Local Storage            | SQLite database for offline-first experience          |
+
+---
+
+## ⚙️ Tech Stack
+
+* **React** — Frontend UI
+* **Capacitor** — Mobile app runtime
+* **SQLite** — Local database
+
+---
+
+## 🖼️ Screenshots
+
+### 🏠 Home Page
+
+* Displays daily words
+* Navigation to add or review words
+
+### ➕ Add Word Page
+
+* Input new word, translation, and notes
+
+### 📅 Daily Words Page
+
+* Words grouped by the day they were added
+
+### 🔁 Spaced Repetition Page
+
+* Flashcards powered by spaced repetition algorithm
+
+---
+
+## 🚀 Future Improvements
+
+* User accounts & cloud sync
+* AI-powered word suggestions
+* Progress tracking & analytics
+* Multi-language support
+
+---
+
+## 👥 Collaborators
+
+Currently a solo project (no collaborators yet).
+
+---
+
+## 📌 Status
+
+🟡 MVP — actively being improved and expanded
+
+---
+
+## 📄 License
+
+This project is open for learning and personal use. License to be defined.
+
+---
